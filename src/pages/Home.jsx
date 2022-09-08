@@ -37,7 +37,6 @@ class Home extends React.Component {
   };
 
   render() {
-
     const { search, listSearchResults, buttonIsClicked, listOfCategories } = this.state;
     let searchProducts;
     if (listSearchResults.length > 0) {
