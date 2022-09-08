@@ -17,6 +17,6 @@ export default class Cart extends React.Component {
   }
 }
 
-Cart.propTypes = {
-  // cart: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-};
+// Cart.propTypes = {
+//   // cart: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+// };
