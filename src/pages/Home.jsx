@@ -1,12 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 
 class Home extends React.Component {
   state = {
     search: '',
     listSearchResults: [],
     buttonIsClicked: false,
+    listOfCategories: [],
+  };
+
+  componentDidMount() {
+    this.getInfo();
+  }
+
+  getInfo = async () => {
+    const categories = await getCategories();
+    this.setState({
+      listOfCategories: categories,
+    });
   };
 
   handleChange = ({ target }) => {
@@ -25,7 +37,8 @@ class Home extends React.Component {
   };
 
   render() {
-    const { search, listSearchResults, buttonIsClicked } = this.state;
+
+    const { search, listSearchResults, buttonIsClicked, listOfCategories } = this.state;
     let searchProducts;
     if (listSearchResults.length > 0) {
       searchProducts = (
@@ -59,6 +72,7 @@ class Home extends React.Component {
         </div>
       );
     }
+
     return (
       <div>
         <header>
@@ -69,6 +83,26 @@ class Home extends React.Component {
             Carrinho
           </Link>
         </header>
+        <aside>
+          <h4>Categorias:</h4>
+          <ul>
+            {
+              listOfCategories.map((categorie) => (
+                <li key={ categorie.id }>
+                  <label htmlFor={ categorie.name } data-testid="category">
+                    <input
+                      type="radio"
+                      value={ categorie.name }
+                      name="categoria"
+                    />
+                    {' '}
+                    {categorie.name}
+                  </label>
+
+                </li>))
+            }
+          </ul>
+        </aside>
         <input
           data-testid="query-input"
           type="text"
