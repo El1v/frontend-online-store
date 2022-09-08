@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends React.Component {
   state = {
     search: '',
+    listSearchResults: [],
+    buttonIsClicked: false,
   };
 
   handleChange = ({ target }) => {
@@ -12,12 +15,50 @@ class Home extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleClick = () => {
-    console.log('teste');
+  handleClick = async () => {
+    const { search } = this.state;
+    const response = await getProductsFromCategoryAndQuery('', search);
+    this.setState({
+      listSearchResults: response.results,
+      buttonIsClicked: true,
+    });
   };
 
   render() {
-    const { search } = this.state;
+    const { search, listSearchResults, buttonIsClicked } = this.state;
+    let searchProducts;
+    if (listSearchResults.length > 0) {
+      searchProducts = (
+        <div>
+          {
+            listSearchResults.map((product) => (
+              <div key={ product.id } data-testid="product">
+                <h4>
+                  { product.title }
+                </h4>
+                <img src={ product.thumbnail } alt={ product.title } />
+                <p>
+                  { product.price }
+                </p>
+              </div>
+            ))
+          }
+        </div>);
+    } else if (listSearchResults.length === 0 && buttonIsClicked === true) {
+      searchProducts = (
+        <div>
+          <h2>Nenhum produto foi encontrado</h2>
+        </div>
+      );
+    } else {
+      searchProducts = (
+        <div>
+          <h2 data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </h2>
+        </div>
+      );
+    }
     return (
       <div>
         <header>
@@ -29,20 +70,17 @@ class Home extends React.Component {
           </Link>
         </header>
         <input
+          data-testid="query-input"
           type="text"
           value={ search }
           onChange={ this.handleChange }
           name="search"
           placeholder="Digite algum produto"
         />
-        <button type="button" onClick={ this.handleClick }>
+        <button data-testid="query-button" type="button" onClick={ this.handleClick }>
           Pesquisar
         </button>
-        <h3
-          data-testid="home-initial-message"
-        >
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </h3>
+        { searchProducts }
       </div>
     );
   }
