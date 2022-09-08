@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
-
+//
 class Home extends React.Component {
   state = {
     search: '',
@@ -37,7 +37,6 @@ class Home extends React.Component {
   };
 
   render() {
-
     const { search, listSearchResults, buttonIsClicked, listOfCategories } = this.state;
     let searchProducts;
     if (listSearchResults.length > 0) {
