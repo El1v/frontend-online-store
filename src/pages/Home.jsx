@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Home extends React.Component {
   state = {
@@ -19,6 +20,14 @@ class Home extends React.Component {
     const { search } = this.state;
     return (
       <div>
+        <header>
+          <Link
+            to="/Cart"
+            data-testid="shopping-cart-button"
+          >
+            Carrinho
+          </Link>
+        </header>
         <input
           type="text"
           value={ search }
