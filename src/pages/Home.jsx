@@ -8,6 +8,7 @@ class Home extends React.Component {
     listSearchResults: [],
     buttonIsClicked: false,
     listOfCategories: [],
+    categorieValue: '',
   };
 
   componentDidMount() {
@@ -28,16 +29,33 @@ class Home extends React.Component {
   };
 
   handleClick = async () => {
-    const { search } = this.state;
-    const response = await getProductsFromCategoryAndQuery('', search);
+    const { search, categorieValue } = this.state;
+    const response = await getProductsFromCategoryAndQuery(categorieValue, search);
     this.setState({
       listSearchResults: response.results,
       buttonIsClicked: true,
+      search: '',
+    });
+  };
+
+  handleChangeCategorie = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value }, async () => {
+      const { search, categorieValue } = this.state;
+      const response = await getProductsFromCategoryAndQuery(categorieValue, search);
+      this.setState({
+        listSearchResults: response.results,
+        search: '',
+      });
     });
   };
 
   render() {
-    const { search, listSearchResults, buttonIsClicked, listOfCategories } = this.state;
+    const { search,
+      listSearchResults,
+      buttonIsClicked,
+      listOfCategories,
+    } = this.state;
     let searchProducts;
     if (listSearchResults.length > 0) {
       searchProducts = (
@@ -91,8 +109,9 @@ class Home extends React.Component {
                   <label htmlFor={ categorie.name } data-testid="category">
                     <input
                       type="radio"
-                      value={ categorie.name }
-                      name="categoria"
+                      value={ categorie.id }
+                      name="categorieValue"
+                      onChange={ this.handleChangeCategorie }
                     />
                     {' '}
                     {categorie.name}
