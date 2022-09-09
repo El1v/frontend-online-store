@@ -38,15 +38,14 @@ class Home extends React.Component {
     });
   };
 
-  handleChangeCategorie = ({ target }) => {
-    const { name, value } = target;
-    this.setState({ [name]: value }, async () => {
-      const { search, categorieValue } = this.state;
-      const response = await getProductsFromCategoryAndQuery(categorieValue, search);
-      this.setState({
-        listSearchResults: response.results,
-        search: '',
-      });
+  handleChangeCategorie = async ({ target }) => {
+    const { value } = target;
+    const { search } = this.state;
+    const response = await getProductsFromCategoryAndQuery(value, search);
+    this.setState({
+      listSearchResults: response.results,
+      search: '',
+      categorieValue: value,
     });
   };
 
