@@ -105,8 +105,9 @@ class Home extends React.Component {
             {
               listOfCategories.map((categorie) => (
                 <li key={ categorie.id }>
-                  <label htmlFor={ categorie.name } data-testid="category">
+                  <label htmlFor={ categorie.name }>
                     <input
+                      data-testid="category"
                       type="radio"
                       value={ categorie.id }
                       name="categorieValue"
