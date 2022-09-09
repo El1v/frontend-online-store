@@ -9,9 +9,11 @@ export default class Cart extends React.Component {
 
   componentDidMount() {
     const cartProduct = JSON.parse(localStorage.getItem('cartProduct'));
-    this.setState({
-      cartProducts: cartProduct,
-    });
+    if (cartProduct) {
+      this.setState({
+        cartProducts: cartProduct,
+      });
+    }
   }
 
   render() {
