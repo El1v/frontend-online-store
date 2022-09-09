@@ -88,6 +88,22 @@ class Home extends React.Component {
                   adicionar ao carrinho
                 </button>
               </div>
+
+              <Link
+                to={ `/product/${product.id}` }
+                key={ product.id }
+                data-testid="product-detail-link"
+              >
+                <div data-testid="product">
+                  <h4>
+                    { product.title }
+                  </h4>
+                  <img src={ product.thumbnail } alt={ product.title } />
+                  <p>
+                    { product.price }
+                  </p>
+                </div>
+              </Link>
             ))
           }
         </div>);
