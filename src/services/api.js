@@ -6,11 +6,18 @@ export async function getCategories() {
 }
 
 export async function getProductsFromCategoryAndQuery(categoryId, query) {
-  const url = `https://api.mercadolibre.com/sites/MLB/search?category=${categoryId}_ID&q=${query}`;
-  // const url = `https://api.mercadolibre.com/sites/MLB/search?q= ${query}`;
+  if (query) {
+    const url = `https://api.mercadolibre.com/sites/MLB/search?category=${categoryId}_ID&q=${query}`;
+    const response = await fetch(url);
+    const result = await response.json();
+    console.log(result);
+    return result;
+  }
+  const url = `https://api.mercadolibre.com/sites/MLB/search?category=${categoryId}`;
   const response = await fetch(url);
   const result = await response.json();
   return result;
+  // const url = `https://api.mercadolibre.com/sites/MLB/search?q= ${query}`;
 }
 
 export async function getProductById() {
