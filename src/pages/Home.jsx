@@ -1,3 +1,4 @@
+import { prettyDOM } from '@testing-library/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
@@ -9,6 +10,7 @@ class Home extends React.Component {
     buttonIsClicked: false,
     listOfCategories: [],
     categorieValue: '',
+    cartProducts: [],
   };
 
   componentDidMount() {
@@ -49,6 +51,15 @@ class Home extends React.Component {
     });
   };
 
+  addProductToCart = (product) => {
+    this.setState((prevState) => ({
+      cartProducts: [...prevState.cartProducts, product],
+    }), () => {
+      const { cartProducts } = this.state;
+      localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
+    });
+  };
+
   render() {
     const { search,
       listSearchResults,
@@ -69,6 +80,13 @@ class Home extends React.Component {
                 <p>
                   { product.price }
                 </p>
+                <button
+                  data-testid="product-add-to-cart"
+                  type="button"
+                  onClick={ () => this.addProductToCart(product) }
+                >
+                  adicionar ao carrinho
+                </button>
               </div>
             ))
           }
@@ -88,7 +106,6 @@ class Home extends React.Component {
         </div>
       );
     }
-
     return (
       <div>
         <header>
