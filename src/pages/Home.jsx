@@ -57,15 +57,16 @@ class Home extends React.Component {
 
     // Verifica se existe algum "cardProduct" no localStorage
     // se tiver, ele pega o valor do localStorage e armaze na variavel
-    // productsStorage que foi criada na linha 54 ^
+    // productsStorage que foi criada na linha 53 ^
     if (Object.prototype.hasOwnProperty.call(localStorage, 'cartProduct')) {
       productsStorage = JSON.parse(localStorage.getItem('cartProduct'));
     }
-    // Pega o array que foi criado na linha 54 e atualizado dentro do if acima e adiciona mais itens com o productsStorage.push
+    // Pega o array que foi criado na linha 53 e atualizado dentro do if acima e adiciona mais itens com o productsStorage.push
     productsStorage.push({ price, title, thumbnail, id });
     // Seta no localStorage o valor do array atualizado
     localStorage.setItem('cartProduct', JSON.stringify(productsStorage));
 
+    // antes da refatoração
     // this.setState((prevState) => ({
     //   cartProducts: [...prevState.cartProducts, product],
     // }), () => {

@@ -12,29 +12,9 @@ export default class Cart extends React.Component {
     if (cartProductStorage) {
       this.setState({
         cartProducts: cartProductStorage,
-      }, () => {
-        this.teste();
       });
     }
   }
-
-  teste = () => {
-    const { cartProducts } = this.state;
-    const cartProductsId = cartProducts.map((element) => element.id);
-
-    const quantityProducts = cartProductsId.reduce((resultQuantity, currentId) => {
-      // console.log(resultQuantity, currentId.id);
-      if (resultQuantity[currentId] === undefined) {
-        resultQuantity[currentId] = 1;
-      } else {
-        resultQuantity[currentId] += 1;
-      }
-
-      return resultQuantity;
-    }, {});
-
-    console.log(quantityProducts);
-  };
 
   render() {
     const { cartProducts } = this.state;
@@ -53,6 +33,9 @@ export default class Cart extends React.Component {
                 <img src={ product.thumbnail } alt={ product.title } />
                 <p>
                   { product.price }
+                </p>
+                <p data-testid="shopping-cart-product-quantity">
+                  {cartProducts.filter((prod) => prod.id === product.id).length}
                 </p>
                 {/* <button
                 type="button"
