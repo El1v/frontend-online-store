@@ -9,13 +9,32 @@ export default class Cart extends React.Component {
 
   componentDidMount() {
     const cartProductStorage = JSON.parse(localStorage.getItem('cartProduct'));
-    // const cartProductStorage = JSON.parse(localStorage.getItem('cartProduct'));
     if (cartProductStorage) {
       this.setState({
         cartProducts: cartProductStorage,
+      }, () => {
+        this.teste();
       });
     }
   }
+
+  teste = () => {
+    const { cartProducts } = this.state;
+    const cartProductsId = cartProducts.map((element) => element.id);
+
+    const quantityProducts = cartProductsId.reduce((resultQuantity, currentId) => {
+      // console.log(resultQuantity, currentId.id);
+      if (resultQuantity[currentId] === undefined) {
+        resultQuantity[currentId] = 1;
+      } else {
+        resultQuantity[currentId] += 1;
+      }
+
+      return resultQuantity;
+    }, {});
+
+    console.log(quantityProducts);
+  };
 
   render() {
     const { cartProducts } = this.state;
