@@ -9,7 +9,6 @@ class Home extends React.Component {
     buttonIsClicked: false,
     listOfCategories: [],
     categorieValue: '',
-    cartProducts: [],
   };
 
   componentDidMount() {
