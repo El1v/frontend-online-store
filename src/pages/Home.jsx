@@ -1,4 +1,3 @@
-import { prettyDOM } from '@testing-library/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
@@ -66,44 +65,39 @@ class Home extends React.Component {
       buttonIsClicked,
       listOfCategories,
     } = this.state;
+
     let searchProducts;
+
     if (listSearchResults.length > 0) {
       searchProducts = (
         <div>
           {
             listSearchResults.map((product) => (
-              <div key={ product.id } data-testid="product">
-                <h4>
-                  { product.title }
-                </h4>
-                <img src={ product.thumbnail } alt={ product.title } />
-                <p>
-                  { product.price }
-                </p>
-                <button
-                  data-testid="product-add-to-cart"
-                  type="button"
-                  onClick={ () => this.addProductToCart(product) }
+              <div key={ product.id }>
+                <Link
+                  to={ `/product/${product.id}` }
+                  data-testid="product-detail-link"
                 >
-                  adicionar ao carrinho
-                </button>
-              </div>
-
-              <Link
-                to={ `/product/${product.id}` }
-                key={ product.id }
-                data-testid="product-detail-link"
-              >
-                <div data-testid="product">
-                  <h4>
-                    { product.title }
-                  </h4>
-                  <img src={ product.thumbnail } alt={ product.title } />
-                  <p>
-                    { product.price }
-                  </p>
+                  <div data-testid="product">
+                    <h4>
+                      { product.title }
+                    </h4>
+                    <img src={ product.thumbnail } alt={ product.title } />
+                    <p>
+                      { product.price }
+                    </p>
+                  </div>
+                </Link>
+                <div>
+                  <button
+                    data-testid="product-add-to-cart"
+                    type="button"
+                    onClick={ () => this.addProductToCart(product) }
+                  >
+                    adicionar ao carrinho
+                  </button>
                 </div>
-              </Link>
+              </div>
             ))
           }
         </div>);
@@ -154,6 +148,7 @@ class Home extends React.Component {
             }
           </ul>
         </aside>
+
         <input
           data-testid="query-input"
           type="text"
@@ -162,10 +157,13 @@ class Home extends React.Component {
           name="search"
           placeholder="Digite algum produto"
         />
+
         <button data-testid="query-button" type="button" onClick={ this.handleClick }>
           Pesquisar
         </button>
+
         { searchProducts }
+
       </div>
     );
   }
