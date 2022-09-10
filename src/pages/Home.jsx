@@ -9,7 +9,6 @@ class Home extends React.Component {
     buttonIsClicked: false,
     listOfCategories: [],
     categorieValue: '',
-    cartProducts: [],
   };
 
   componentDidMount() {
@@ -51,28 +50,12 @@ class Home extends React.Component {
   };
 
   addProductToCart = (product) => {
-    let productsStorage = [];
-
-    // Fazendo o destruction para salvar apenas os dados necessários no localStorage
-    const { price, title, thumbnail, id } = product;
-
-    // Verifica se existe algum "cardProduct" no localStorage
-    // se tiver, ele pega o valor do localStorage e armaze na variavel
-    // productsStorage que foi criada na linha 54 ^
-    if (Object.prototype.hasOwnProperty.call(localStorage, 'cartProduct')) {
-      productsStorage = JSON.parse(localStorage.getItem('cartProduct'));
-    }
-    // Pega o array que foi criado na linha 54 e atualizado dentro do if acima e adiciona mais itens com o productsStorage.push
-    productsStorage.push({ price, title, thumbnail, id });
-    // Seta no localStorage o valor do array atualizado
-    localStorage.setItem('cartProduct', JSON.stringify(productsStorage));
-
-    // this.setState((prevState) => ({
-    //   cartProducts: [...prevState.cartProducts, product],
-    // }), () => {
-    //   const { cartProducts } = this.state;
-    //   localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
-    // });
+    this.setState((prevState) => ({
+      cartProducts: [...prevState.cartProducts, product],
+    }), () => {
+      const { cartProducts } = this.state;
+      localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
+    });
   };
 
   render() {
