@@ -16,8 +16,17 @@ export default class Cart extends React.Component {
     }
   }
 
+  // teste
   render() {
     const { cartProducts } = this.state;
+
+    const filteredCart = cartProducts.reduce((acc, current) => {
+      const verify = acc.find((product) => product.id === current.id);
+      if (!verify) {
+        return acc.concat([current]);
+      }
+      return acc;
+    }, []);
 
     let resultCart;
 
@@ -25,7 +34,7 @@ export default class Cart extends React.Component {
       resultCart = (
         <div>
           {
-            cartProducts.map((product) => (
+            filteredCart.map((product) => (
               <div key={ product.id } data-testid="product">
                 <h4 data-testid="shopping-cart-product-name">
                   { product.title }
