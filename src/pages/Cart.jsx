@@ -8,10 +8,10 @@ export default class Cart extends React.Component {
   };
 
   componentDidMount() {
-    const cartProduct = JSON.parse(localStorage.getItem('cartProduct'));
-    if (cartProduct) {
+    const cartProductStorage = JSON.parse(localStorage.getItem('cartProduct'));
+    if (cartProductStorage) {
       this.setState({
-        cartProducts: cartProduct,
+        cartProducts: cartProductStorage,
       });
     }
   }
@@ -33,6 +33,9 @@ export default class Cart extends React.Component {
                 <img src={ product.thumbnail } alt={ product.title } />
                 <p>
                   { product.price }
+                </p>
+                <p data-testid="shopping-cart-product-quantity">
+                  {cartProducts.filter((prod) => prod.id === product.id).length}
                 </p>
                 {/* <button
                 type="button"
