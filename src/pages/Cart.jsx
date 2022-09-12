@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import addProductToCart from '../services/generalFunctions';
 // import PropTypes from 'prop-types';
 
 export default class Cart extends React.Component {
@@ -8,15 +9,55 @@ export default class Cart extends React.Component {
   };
 
   componentDidMount() {
+    this.updateState();
+  }
+
+  updateState = () => {
     const cartProductStorage = JSON.parse(localStorage.getItem('cartProduct'));
     if (cartProductStorage) {
       this.setState({
         cartProducts: cartProductStorage,
       });
+    } else {
+      this.setState({
+        cartProducts: [],
+      });
     }
-  }
+  };
 
-  // teste
+  decreaseQuantity = (product) => {
+    const { cartProducts } = this.state;
+    const quantity = cartProducts.filter((prod) => prod.id === product.id).length;
+
+    if (quantity > 1) {
+      const cartProductStorage = JSON.parse(localStorage.getItem('cartProduct'));
+      const indexToRemove = cartProductStorage.slice().reverse().findIndex((element) => (
+        element.id === product.id));
+
+      cartProductStorage.splice(indexToRemove, 1);
+      const cardProductStorageUpdated = cartProductStorage.reverse();
+      localStorage.setItem('cartProduct', JSON.stringify(cardProductStorageUpdated));
+      this.updateState();
+    }
+  };
+
+  removeProductToCart = (product) => {
+    const { cartProducts } = this.state;
+    const filteredCart = cartProducts.filter((element) => element.id !== product.id);
+    localStorage.setItem('cartProduct', JSON.stringify(filteredCart));
+    this.updateState();
+  };
+
+  increaseQuantity = (product) => {
+    addProductToCart(product);
+    this.updateState();
+  };
+
+  clearCart = () => {
+    localStorage.removeItem('cartProduct');
+    this.updateState();
+  };
+
   render() {
     const { cartProducts } = this.state;
 
@@ -43,18 +84,45 @@ export default class Cart extends React.Component {
                 <p>
                   { product.price }
                 </p>
+                <button
+                  data-testid="product-increase-quantity"
+                  type="button"
+                  onClick={ () => this.increaseQuantity(product) }
+                >
+                  +
+
+                </button>
+
                 <p data-testid="shopping-cart-product-quantity">
                   {cartProducts.filter((prod) => prod.id === product.id).length}
                 </p>
-                {/* <button
-                type="button"
-                onClick={ () => this.addProductToCart(product) }
-              >
-                adicionar ao carrinho
-              </button> */}
+
+                <button
+                  type="button"
+                  data-testid="product-decrease-quantity"
+                  onClick={ () => this.decreaseQuantity(product) }
+                >
+                  -
+
+                </button>
+                <button
+                  type="button"
+                  data-testid="remove-product"
+                  onClick={ () => this.removeProductToCart(product) }
+                >
+                  Remover Produto
+
+                </button>
               </div>
             ))
           }
+          <button
+            type="button"
+            onClick={ this.clearCart }
+          >
+            Limpar Carrinho
+
+          </button>
         </div>
       );
     } else {
