@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 import addProductToCart from '../services/generalFunctions';
-//
+
 class Home extends React.Component {
   state = {
     search: '',

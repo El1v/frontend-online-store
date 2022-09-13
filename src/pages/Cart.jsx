@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import addProductToCart from '../services/generalFunctions';
 // import PropTypes from 'prop-types';
 
 export default class Cart extends React.Component {
   state = {
     cartProducts: [],
+    redirect: false,
   };
 
   componentDidMount() {
@@ -58,8 +59,14 @@ export default class Cart extends React.Component {
     this.updateState();
   };
 
+  redirectClick = () => {
+    this.setState({
+      redirect: true,
+    });
+  };
+
   render() {
-    const { cartProducts } = this.state;
+    const { cartProducts, redirect } = this.state;
 
     const filteredCart = cartProducts.reduce((acc, current) => {
       const verify = acc.find((product) => product.id === current.id);
@@ -71,6 +78,10 @@ export default class Cart extends React.Component {
 
     let resultCart;
 
+    if (redirect) {
+      return <Redirect to="/Payment" />;
+    }
+
     if (cartProducts.length > 0) {
       resultCart = (
         <div>
@@ -78,11 +89,11 @@ export default class Cart extends React.Component {
             filteredCart.map((product) => (
               <div key={ product.id } data-testid="product">
                 <h4 data-testid="shopping-cart-product-name">
-                  { product.title }
+                  {product.title}
                 </h4>
                 <img src={ product.thumbnail } alt={ product.title } />
                 <p>
-                  { product.price }
+                  {product.price}
                 </p>
                 <button
                   data-testid="product-increase-quantity"
@@ -123,6 +134,13 @@ export default class Cart extends React.Component {
             Limpar Carrinho
 
           </button>
+          <button
+            type="button"
+            data-testid="checkout-products"
+            onClick={ this.redirectClick }
+          >
+            Finalizar Compra
+          </button>
         </div>
       );
     } else {
@@ -136,9 +154,9 @@ export default class Cart extends React.Component {
         <Link
           to="/"
         >
-          Voltar para pagina incial
+          Voltar para pagina inicial
         </Link>
-        { resultCart }
+        {resultCart}
       </div>
     );
   }
